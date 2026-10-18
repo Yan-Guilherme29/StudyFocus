@@ -1,4 +1,4 @@
-package com.example.studyfocus.ui.login
+package com.example.studyfocus.ui.disciplinas
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun DisciplinaScreen() {
+fun DisciplinasScreen() {
 
     Box(
 
@@ -23,5 +23,5 @@ fun DisciplinaScreen() {
 @Preview(showBackground = true)
 @Composable
 fun DisciplinaScreenPreview() {
-    DisciplinaScreen()
+    DisciplinasScreen()
 }

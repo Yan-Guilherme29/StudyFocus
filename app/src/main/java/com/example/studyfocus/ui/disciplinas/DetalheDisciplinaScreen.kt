@@ -1,4 +1,4 @@
-package com.example.studyfocus.ui.login
+package com.example.studyfocus.ui.disciplinas
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
