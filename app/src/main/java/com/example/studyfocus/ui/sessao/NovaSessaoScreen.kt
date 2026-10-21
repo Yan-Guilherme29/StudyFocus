@@ -161,6 +161,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
 
         Spacer(modifier = Modifier.height(24.dp))
         Button(
+            enabled = disciplinaSelecionada != null,
             onClick = onIniciarClick,
             modifier = Modifier.fillMaxWidth()
         ) {
