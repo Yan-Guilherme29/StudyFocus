@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.studyfocus.data.model.Disciplina
 import com.example.studyfocus.data.model.Prioridade
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 
 private val Indigo = Color(0xFF4F46E5)
 private val Fundo = Color(0xFFF8F9FC)
@@ -232,5 +233,7 @@ private fun DropdownCampo(
 @Preview(showBackground = true)
 @Composable
 fun NovaTarefaScreenPreview() {
-    NovaTarefaScreen()
+    StudyFocusTheme {
+        NovaTarefaScreen()
+    }
 }

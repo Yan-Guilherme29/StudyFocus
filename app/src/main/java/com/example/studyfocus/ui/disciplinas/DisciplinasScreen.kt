@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.studyfocus.data.model.Disciplina
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 
 private val Indigo = Color(0xFF4F46E5)
 private val IndigoClaro = Color(0xFFEEF2FF)
@@ -190,8 +191,10 @@ private fun icone(path: String): ImageVector =
 
 private val IconeSeta = icone("M5 12h14M12 5l7 7-7 7")
 private val IconeInicio = icone("M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10")
-private val IconeDisciplinas = icone("M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z")
-private val IconeTarefas = icone("M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 12l2 2 4-4")
+private val IconeDisciplinas =
+    icone("M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z")
+private val IconeTarefas =
+    icone("M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 12l2 2 4-4")
 private val IconeSessao = icone("M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 6v6l4 2")
 private val IconeEstatisticas = icone("M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3")
 
@@ -208,10 +211,20 @@ private fun BarraInferior(
         HorizontalDivider(color = Borda)
         NavigationBar(containerColor = Color.White, tonalElevation = 0.dp) {
             ItemBarra("Início", IconeInicio, selecionado = false, onClick = onInicioClick)
-            ItemBarra("Disciplinas", IconeDisciplinas, selecionado = true, onClick = onDisciplinasClick)
+            ItemBarra(
+                "Disciplinas",
+                IconeDisciplinas,
+                selecionado = true,
+                onClick = onDisciplinasClick
+            )
             ItemBarra("Tarefas", IconeTarefas, selecionado = false, onClick = onTarefasClick)
             ItemBarra("Sessão", IconeSessao, selecionado = false, onClick = onSessaoClick)
-            ItemBarra("Estatísticas", IconeEstatisticas, selecionado = false, onClick = onEstatisticasClick)
+            ItemBarra(
+                "Estatísticas",
+                IconeEstatisticas,
+                selecionado = false,
+                onClick = onEstatisticasClick
+            )
         }
     }
 }
@@ -241,5 +254,7 @@ private fun RowScope.ItemBarra(
 @Preview(showBackground = true)
 @Composable
 fun DisciplinaScreenPreview() {
-    DisciplinasScreen()
+    StudyFocusTheme {
+        DisciplinasScreen()
+    }
 }
