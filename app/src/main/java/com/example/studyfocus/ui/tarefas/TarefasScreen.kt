@@ -39,6 +39,7 @@ import com.example.studyfocus.data.model.Disciplina
 import com.example.studyfocus.data.model.Prioridade
 import com.example.studyfocus.data.model.StatusTarefa
 import com.example.studyfocus.data.model.Tarefa
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -117,9 +118,15 @@ fun TarefasScreen(
         Spacer(Modifier.height(12.dp))
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            ChipFiltro("Todas (${tarefasFake.size})", filtro == Filtro.TODAS) { filtro = Filtro.TODAS }
-            ChipFiltro("Pendentes (${pendentes.size})", filtro == Filtro.PENDENTES) { filtro = Filtro.PENDENTES }
-            ChipFiltro("Alta Prioridade (${altas.size})", filtro == Filtro.ALTA) { filtro = Filtro.ALTA }
+            ChipFiltro("Todas (${tarefasFake.size})", filtro == Filtro.TODAS) {
+                filtro = Filtro.TODAS
+            }
+            ChipFiltro("Pendentes (${pendentes.size})", filtro == Filtro.PENDENTES) {
+                filtro = Filtro.PENDENTES
+            }
+            ChipFiltro("Alta Prioridade (${altas.size})", filtro == Filtro.ALTA) {
+                filtro = Filtro.ALTA
+            }
         }
 
         Spacer(Modifier.height(12.dp))
@@ -298,5 +305,7 @@ private fun TextoPrioridade(prioridade: Prioridade) {
 @Preview(showBackground = true)
 @Composable
 fun TarefasScreenPreview() {
-    TarefasScreen()
+    StudyFocusTheme {
+        TarefasScreen()
+    }
 }

@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.studyfocus.data.model.Disciplina
 import com.example.studyfocus.data.model.Tarefa
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 
 private val disciplinasFake = listOf(
     Disciplina(id = "1", nome = "Banco de Dados I"),
@@ -173,5 +174,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
 @Preview(showBackground = true)
 @Composable
 fun NovaSessaoScreenPreview() {
-    NovaSessaoScreen()
+    StudyFocusTheme {
+        NovaSessaoScreen()
+    }
 }

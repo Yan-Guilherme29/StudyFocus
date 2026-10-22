@@ -26,6 +26,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.graphics.Color
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 
 @Composable
 fun RevisaoDiariaScreen(
@@ -83,9 +84,9 @@ fun RevisaoDiariaScreen(
         // Card 3: pergunta
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = nomeDisciplina ,style = MaterialTheme.typography.labelMedium)
+                Text(text = nomeDisciplina, style = MaterialTheme.typography.labelMedium)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = pergunta , style = MaterialTheme.typography.titleMedium)
+                Text(text = pergunta, style = MaterialTheme.typography.titleMedium)
             }
         }
 
@@ -158,8 +159,10 @@ fun RevisaoDiariaScreen(
     }
 }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun RevisaoDiariaScreenPreview() {
+@Preview(showBackground = true)
+@Composable
+fun RevisaoDiariaScreenPreview() {
+    StudyFocusTheme {
         RevisaoDiariaScreen()
     }
+}

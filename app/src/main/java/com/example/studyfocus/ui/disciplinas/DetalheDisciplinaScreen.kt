@@ -33,6 +33,7 @@ import com.example.studyfocus.data.model.Flashcard
 import com.example.studyfocus.data.model.Prioridade
 import com.example.studyfocus.data.model.StatusTarefa
 import com.example.studyfocus.data.model.Tarefa
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -267,5 +268,7 @@ private fun CardFlashcard(flashcard: Flashcard) {
 @Preview(showBackground = true)
 @Composable
 fun DetalheDisciplinaScreenPreview() {
-    DetalheDisciplinaScreen()
+    StudyFocusTheme {
+        DetalheDisciplinaScreen()
+    }
 }

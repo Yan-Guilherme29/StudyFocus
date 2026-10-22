@@ -52,6 +52,7 @@ import com.example.studyfocus.data.model.Prioridade
 import com.example.studyfocus.data.model.SessaoEstudo
 import com.example.studyfocus.data.model.StatusTarefa
 import com.example.studyfocus.data.model.Tarefa
+import com.example.studyfocus.ui.theme.StudyFocusTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -111,15 +112,42 @@ private val tarefasFake = listOf(
         status = StatusTarefa.EM_ANDAMENTO,
         disciplinaId = "2"
     ),
-    Tarefa(id = "3", titulo = "Lista de Limites", status = StatusTarefa.CONCLUIDA, disciplinaId = "3"),
-    Tarefa(id = "4", titulo = "Resumo de Normalização", status = StatusTarefa.CONCLUIDA, disciplinaId = "1"),
-    Tarefa(id = "5", titulo = "Implementar Pilha e Fila", status = StatusTarefa.CONCLUIDA, disciplinaId = "2")
+    Tarefa(
+        id = "3",
+        titulo = "Lista de Limites",
+        status = StatusTarefa.CONCLUIDA,
+        disciplinaId = "3"
+    ),
+    Tarefa(
+        id = "4",
+        titulo = "Resumo de Normalização",
+        status = StatusTarefa.CONCLUIDA,
+        disciplinaId = "1"
+    ),
+    Tarefa(
+        id = "5",
+        titulo = "Implementar Pilha e Fila",
+        status = StatusTarefa.CONCLUIDA,
+        disciplinaId = "2"
+    )
 )
 
 // Sessões de foco da semana (somam 3h20)
 private val sessoesFake = listOf(
-    SessaoEstudo(id = "1", disciplinaId = "1", tarefaId = "1", inicio = agora - UM_DIA, duracaoMin = 50),
-    SessaoEstudo(id = "2", disciplinaId = "2", tarefaId = "2", inicio = agora - 2 * UM_DIA, duracaoMin = 45),
+    SessaoEstudo(
+        id = "1",
+        disciplinaId = "1",
+        tarefaId = "1",
+        inicio = agora - UM_DIA,
+        duracaoMin = 50
+    ),
+    SessaoEstudo(
+        id = "2",
+        disciplinaId = "2",
+        tarefaId = "2",
+        inicio = agora - 2 * UM_DIA,
+        duracaoMin = 45
+    ),
     SessaoEstudo(id = "3", disciplinaId = "3", inicio = agora - 3 * UM_DIA, duracaoMin = 60),
     SessaoEstudo(id = "4", disciplinaId = "1", inicio = agora - 4 * UM_DIA, duracaoMin = 45)
 )
@@ -495,7 +523,11 @@ private fun Estatistica(valor: String, legenda: String, cor: Color, modifier: Mo
 }
 
 @Composable
-private fun CardDisciplina(disciplina: Disciplina, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun CardDisciplina(
+    disciplina: Disciplina,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Card(
         onClick = onClick,
         modifier = modifier,
@@ -549,8 +581,10 @@ private fun icone(path: String): ImageVector =
     ).build()
 
 private val IconeInicio = icone("M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10")
-private val IconeDisciplinas = icone("M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z")
-private val IconeTarefas = icone("M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 12l2 2 4-4")
+private val IconeDisciplinas =
+    icone("M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z")
+private val IconeTarefas =
+    icone("M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 12l2 2 4-4")
 private val IconeSessao = icone("M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 6v6l4 2")
 private val IconeEstatisticas = icone("M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3")
 
@@ -567,10 +601,20 @@ private fun BarraInferior(
         HorizontalDivider(color = Borda)
         NavigationBar(containerColor = Color.White, tonalElevation = 0.dp) {
             ItemBarra("Início", IconeInicio, selecionado = true, onClick = onInicioClick)
-            ItemBarra("Disciplinas", IconeDisciplinas, selecionado = false, onClick = onDisciplinasClick)
+            ItemBarra(
+                "Disciplinas",
+                IconeDisciplinas,
+                selecionado = false,
+                onClick = onDisciplinasClick
+            )
             ItemBarra("Tarefas", IconeTarefas, selecionado = false, onClick = onTarefasClick)
             ItemBarra("Sessão", IconeSessao, selecionado = false, onClick = onSessaoClick)
-            ItemBarra("Estatísticas", IconeEstatisticas, selecionado = false, onClick = onEstatisticasClick)
+            ItemBarra(
+                "Estatísticas",
+                IconeEstatisticas,
+                selecionado = false,
+                onClick = onEstatisticasClick
+            )
         }
     }
 }
@@ -600,5 +644,7 @@ private fun RowScope.ItemBarra(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    StudyFocusTheme {
+        HomeScreen()
+    }
 }
