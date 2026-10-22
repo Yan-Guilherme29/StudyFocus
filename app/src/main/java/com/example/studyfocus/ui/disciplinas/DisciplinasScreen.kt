@@ -21,11 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,21 +72,10 @@ private val disciplinasFake = listOf(
 @Composable
 fun DisciplinasScreen(
     onDisciplinaClick: (String) -> Unit = {},
-    onInicioClick: () -> Unit = {},
-    onTarefasClick: () -> Unit = {},
-    onNovaSessaoClick: () -> Unit = {},
-    onEstatisticasClick: () -> Unit = {}
 ) {
     Scaffold(
         containerColor = Fundo,
-        bottomBar = {
-            BarraInferior(
-                onInicioClick = onInicioClick,
-                onTarefasClick = onTarefasClick,
-                onSessaoClick = onNovaSessaoClick,
-                onEstatisticasClick = onEstatisticasClick
-            )
-        }
+
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -190,66 +175,6 @@ private fun icone(path: String): ImageVector =
     ).build()
 
 private val IconeSeta = icone("M5 12h14M12 5l7 7-7 7")
-private val IconeInicio = icone("M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10")
-private val IconeDisciplinas =
-    icone("M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z")
-private val IconeTarefas =
-    icone("M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 12l2 2 4-4")
-private val IconeSessao = icone("M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 6v6l4 2")
-private val IconeEstatisticas = icone("M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3")
-
-// Barra de navegação de baixo (igual ao Figma)
-@Composable
-private fun BarraInferior(
-    onInicioClick: () -> Unit = {},
-    onDisciplinasClick: () -> Unit = {},
-    onTarefasClick: () -> Unit = {},
-    onSessaoClick: () -> Unit = {},
-    onEstatisticasClick: () -> Unit = {}
-) {
-    Column {
-        HorizontalDivider(color = Borda)
-        NavigationBar(containerColor = Color.White, tonalElevation = 0.dp) {
-            ItemBarra("Início", IconeInicio, selecionado = false, onClick = onInicioClick)
-            ItemBarra(
-                "Disciplinas",
-                IconeDisciplinas,
-                selecionado = true,
-                onClick = onDisciplinasClick
-            )
-            ItemBarra("Tarefas", IconeTarefas, selecionado = false, onClick = onTarefasClick)
-            ItemBarra("Sessão", IconeSessao, selecionado = false, onClick = onSessaoClick)
-            ItemBarra(
-                "Estatísticas",
-                IconeEstatisticas,
-                selecionado = false,
-                onClick = onEstatisticasClick
-            )
-        }
-    }
-}
-
-@Composable
-private fun RowScope.ItemBarra(
-    texto: String,
-    icone: ImageVector,
-    selecionado: Boolean,
-    onClick: () -> Unit
-) {
-    NavigationBarItem(
-        selected = selecionado,
-        onClick = onClick,
-        icon = { Icon(imageVector = icone, contentDescription = null) },
-        label = { Text(text = texto, fontSize = 11.sp, maxLines = 1) },
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = Indigo,
-            selectedTextColor = Indigo,
-            indicatorColor = Color.Transparent,
-            unselectedIconColor = TextoSuave,
-            unselectedTextColor = TextoSuave
-        )
-    )
-}
 
 @Preview(showBackground = true)
 @Composable

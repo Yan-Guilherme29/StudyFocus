@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,10 +23,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,11 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -190,9 +180,7 @@ private fun formatarDuracao(minutos: Int): String {
 
 @Composable
 fun HomeScreen(
-    onDisciplinasClick: () -> Unit = {},
     onTarefasClick: () -> Unit = {},
-    onNovaSessaoClick: () -> Unit = {},
     onEstatisticasClick: () -> Unit = {},
     onRevisarClick: () -> Unit = {},
     onDisciplinaClick: (String) -> Unit = {}
@@ -204,15 +192,7 @@ fun HomeScreen(
     val minutosEstudados = sessoesFake.sumOf { it.duracaoMin }
 
     Scaffold(
-        containerColor = Fundo,
-        bottomBar = {
-            BarraInferior(
-                onDisciplinasClick = onDisciplinasClick,
-                onTarefasClick = onTarefasClick,
-                onSessaoClick = onNovaSessaoClick,
-                onEstatisticasClick = onEstatisticasClick
-            )
-        }
+        containerColor = Fundo
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -425,7 +405,7 @@ private fun CardProgresso(concluidas: Int, total: Int, minutosEstudados: Int) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, Borda)
     ) {
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(14.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -531,11 +511,11 @@ private fun CardDisciplina(
     Card(
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, Borda)
     ) {
-        Column(Modifier.padding(14.dp)) {
+        Column(Modifier.padding(6.dp)) {
             // faixinha com a cor da disciplina
             Box(
                 modifier = Modifier
@@ -562,83 +542,6 @@ private fun CardDisciplina(
             )
         }
     }
-}
-
-// Ícones desenhados a partir de um path SVG (estilo contorno, igual ao Figma).
-// Assim não precisamos adicionar uma biblioteca de ícones no projeto.
-private fun icone(path: String): ImageVector =
-    ImageVector.Builder(
-        defaultWidth = 24.dp,
-        defaultHeight = 24.dp,
-        viewportWidth = 24f,
-        viewportHeight = 24f
-    ).addPath(
-        pathData = addPathNodes(path),
-        stroke = SolidColor(Color.Black),
-        strokeLineWidth = 2f,
-        strokeLineCap = StrokeCap.Round,
-        strokeLineJoin = StrokeJoin.Round
-    ).build()
-
-private val IconeInicio = icone("M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10")
-private val IconeDisciplinas =
-    icone("M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z")
-private val IconeTarefas =
-    icone("M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 12l2 2 4-4")
-private val IconeSessao = icone("M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20zM12 6v6l4 2")
-private val IconeEstatisticas = icone("M3 3v16a2 2 0 0 0 2 2h16M18 17V9M13 17V5M8 17v-3")
-
-// Barra de navegação de baixo (igual ao Figma)
-@Composable
-private fun BarraInferior(
-    onInicioClick: () -> Unit = {},
-    onDisciplinasClick: () -> Unit = {},
-    onTarefasClick: () -> Unit = {},
-    onSessaoClick: () -> Unit = {},
-    onEstatisticasClick: () -> Unit = {}
-) {
-    Column {
-        HorizontalDivider(color = Borda)
-        NavigationBar(containerColor = Color.White, tonalElevation = 0.dp) {
-            ItemBarra("Início", IconeInicio, selecionado = true, onClick = onInicioClick)
-            ItemBarra(
-                "Disciplinas",
-                IconeDisciplinas,
-                selecionado = false,
-                onClick = onDisciplinasClick
-            )
-            ItemBarra("Tarefas", IconeTarefas, selecionado = false, onClick = onTarefasClick)
-            ItemBarra("Sessão", IconeSessao, selecionado = false, onClick = onSessaoClick)
-            ItemBarra(
-                "Estatísticas",
-                IconeEstatisticas,
-                selecionado = false,
-                onClick = onEstatisticasClick
-            )
-        }
-    }
-}
-
-@Composable
-private fun RowScope.ItemBarra(
-    texto: String,
-    icone: ImageVector,
-    selecionado: Boolean,
-    onClick: () -> Unit
-) {
-    NavigationBarItem(
-        selected = selecionado,
-        onClick = onClick,
-        icon = { Icon(imageVector = icone, contentDescription = null) },
-        label = { Text(text = texto, fontSize = 11.sp, maxLines = 1) },
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = Indigo,
-            selectedTextColor = Indigo,
-            indicatorColor = Color.Transparent,
-            unselectedIconColor = TextoSuave,
-            unselectedTextColor = TextoSuave
-        )
-    )
 }
 
 @Preview(showBackground = true)
