@@ -51,15 +51,70 @@ fun AppNavigation() {
             startDestination = Rotas.LOGIN,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Rotas.LOGIN) { LoginScreen() }
-            composable(Rotas.HOME) { HomeScreen() }
-            composable(Rotas.DISCIPLINAS) { DisciplinasScreen() }
-            composable(Rotas.DETALHE_DISCIPLINA) { DetalheDisciplinaScreen() }
-            composable(Rotas.TAREFAS) { TarefasScreen() }
-            composable(Rotas.NOVA_TAREFA) { NovaTarefaScreen() }
-            composable(Rotas.NOVA_SESSAO) { NovaSessaoScreen() }
-            composable(Rotas.FOCO_ATIVO) { FocoAtivoScreen() }
-            composable(Rotas.REVISAO_DIARIA) { RevisaoDiariaScreen() }
+            composable(Rotas.LOGIN) {
+                LoginScreen(
+                    onEntrarClick = {
+                        navController.navigate(Rotas.HOME) {
+                            popUpTo(Rotas.LOGIN) { inclusive = true }
+                        }
+                    }
+                )
+            }
+            composable(Rotas.HOME) {
+                HomeScreen(
+                    onTarefasClick = { navController.navigate(Rotas.TAREFAS) },
+                    onEstatisticasClick = { navController.navigate(Rotas.ESTATISTICAS) },
+                    onRevisarClick = { navController.navigate(Rotas.REVISAO_DIARIA) },
+                    onDisciplinaClick = { _ -> navController.navigate(Rotas.DETALHE_DISCIPLINA) }
+                )
+            }
+
+            composable(Rotas.DISCIPLINAS) {
+                DisciplinasScreen(
+                    onDisciplinaClick = {
+                        navController.navigate(Rotas.DETALHE_DISCIPLINA)
+                    }
+                )
+            }
+
+            composable(Rotas.DETALHE_DISCIPLINA) {
+                DetalheDisciplinaScreen(
+                    onVoltarClick = { navController.popBackStack() },
+                    onVerTodasTarefasClick = { navController.navigate(Rotas.TAREFAS) },
+                    onRevisarClick = { navController.navigate(Rotas.REVISAO_DIARIA) }
+                )
+            }
+
+            composable(Rotas.TAREFAS) {
+                TarefasScreen(
+                    onNovaTarefaClick = { navController.navigate(Rotas.NOVA_TAREFA) }
+                )
+            }
+
+            composable(Rotas.NOVA_TAREFA) {
+                NovaTarefaScreen(
+                    onVoltarClick = { navController.popBackStack() },
+                    onCriarClick = { navController.popBackStack() }
+                )
+            }
+
+            composable(Rotas.NOVA_SESSAO) {
+                NovaSessaoScreen(
+                    onIniciarClick = { navController.navigate(Rotas.FOCO_ATIVO) }
+                )
+            }
+
+            composable(Rotas.FOCO_ATIVO) {
+                FocoAtivoScreen(
+                    onConcluirClick = { navController.popBackStack(Rotas.HOME, false) }
+                )
+            }
+
+            composable(Rotas.REVISAO_DIARIA) {
+                RevisaoDiariaScreen(
+                    onVoltarClick = { navController.popBackStack() }
+                )
+            }
 
             composable(Rotas.ESTATISTICAS) {
                 Box(
