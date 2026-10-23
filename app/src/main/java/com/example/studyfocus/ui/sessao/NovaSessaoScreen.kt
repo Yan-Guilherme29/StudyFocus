@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,11 +26,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.studyfocus.data.model.Disciplina
 import com.example.studyfocus.data.model.Tarefa
 import com.example.studyfocus.ui.theme.StudyFocusTheme
+
+private val Texto = Color(0xFF1E1E2E)
+private val TextoSuave = Color(0xFF6B7280)
+private val Borda = Color(0xFFE5E7EB)
+private val FormaCampo = RoundedCornerShape(12.dp)
 
 private val disciplinasFake = listOf(
     Disciplina(id = "1", nome = "Banco de Dados I"),
@@ -40,6 +50,27 @@ private val tarefasFake = listOf(
     Tarefa(id = "1", titulo = "Normalização até 3NF", disciplinaId = "1"),
     Tarefa(id = "2", titulo = "Organizar o banco da livraria", disciplinaId = "1"),
     Tarefa(id = "3", titulo = "Implementar busca em árvore", disciplinaId = "2")
+)
+
+// Rótulo acima de cada campo
+@Composable
+private fun Rotulo(texto: String) {
+    Text(
+        text = texto,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.SemiBold,
+        color = Texto
+    )
+    Spacer(modifier = Modifier.height(6.dp))
+}
+
+// Campos brancos com borda cinza, como nas outras telas
+@Composable
+private fun coresCampo() = OutlinedTextFieldDefaults.colors(
+    focusedContainerColor = Color.White,
+    unfocusedContainerColor = Color.White,
+    focusedBorderColor = MaterialTheme.colorScheme.primary,
+    unfocusedBorderColor = Borda
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,12 +90,19 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
     ) {
         Text(
             text = "Nova Sessão de Foco",
-            style = MaterialTheme.typography.headlineSmall
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Texto
         )
-        Text(text = "Prepare seu ambiente para estudar sem distrações")
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "Prepare seu ambiente para estudar sem distrações",
+            fontSize = 14.sp,
+            color = TextoSuave
+        )
 
         Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "Qual disciplina vai estudar hoje?")
+        Rotulo("Qual disciplina vai estudar hoje?")
         ExposedDropdownMenuBox(
             expanded = menuDisciplinaAberto,
             onExpandedChange = { menuDisciplinaAberto = it }
@@ -77,6 +115,8 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuDisciplinaAberto)
                 },
+                shape = FormaCampo,
+                colors = coresCampo(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                     .fillMaxWidth()
@@ -99,7 +139,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Vincular tarefa (opcional)")
+        Rotulo("Vincular tarefa (opcional)")
         ExposedDropdownMenuBox(
             expanded = menuTarefaAberto,
             onExpandedChange = { menuTarefaAberto = it }
@@ -113,6 +153,8 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = menuTarefaAberto)
                 },
+                shape = FormaCampo,
+                colors = coresCampo(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                     .fillMaxWidth()
@@ -134,8 +176,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Tempo de duração")
-        Spacer(modifier = Modifier.height(8.dp))
+        Rotulo("Tempo de duração")
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -145,6 +186,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
                 if (tempoSelecionado == valor) {
                     Button(
                         onClick = { tempoSelecionado = valor },
+                        shape = FormaCampo,
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(rotulo)
@@ -152,6 +194,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
                 } else {
                     OutlinedButton(
                         onClick = { tempoSelecionado = valor },
+                        shape = FormaCampo,
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(rotulo)
@@ -164,6 +207,7 @@ fun NovaSessaoScreen(onIniciarClick: () -> Unit = {}) {
         Button(
             enabled = disciplinaSelecionada != null,
             onClick = onIniciarClick,
+            shape = FormaCampo,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Iniciar Sessão de Estudo")
