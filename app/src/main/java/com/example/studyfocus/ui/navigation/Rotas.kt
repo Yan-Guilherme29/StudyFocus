@@ -12,5 +12,6 @@ object Rotas {
     const val FOCO_ATIVO = "foco_ativo"
     const val REVISAO_DIARIA = "revisao_diaria"
 
+    const val ESTATISTICAS = "estatisticas"
 
 }
