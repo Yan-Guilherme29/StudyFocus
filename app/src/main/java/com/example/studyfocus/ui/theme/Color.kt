@@ -12,3 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 val AzulPrimario = Color(0xFF4F46E5)
 val AzulPrimarioClaro = Color(0xFFA5B4FC)
+
+val FundoApp = Color(0xFFF8F9FC)
