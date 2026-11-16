@@ -17,11 +17,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.studyfocus.ui.theme.StudyFocusTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun FocoAtivoScreen(
@@ -31,6 +37,16 @@ fun FocoAtivoScreen(
     onPausarClick: () -> Unit = {},
     onConcluirClick: () -> Unit = {}
 ) {
+    val totalSegundos = duracaoMin * 60
+    var segundosRestantes by remember { mutableStateOf(totalSegundos) }
+
+    LaunchedEffect(Unit) {
+        while (segundosRestantes > 0) {
+            delay(1000)
+            segundosRestantes--
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,7 +58,6 @@ fun FocoAtivoScreen(
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.fillMaxWidth()
         )
-
         Spacer(modifier = Modifier.height(24.dp))
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -50,23 +65,21 @@ fun FocoAtivoScreen(
                 Text(text = "Tarefa vinculada: ${tituloTarefa ?: "Nenhuma"}")
             }
         }
-
         Spacer(modifier = Modifier.height(32.dp))
         Box(contentAlignment = Alignment.Center) {
             CircularProgressIndicator(
-                progress = { 1f },
+                progress = { segundosRestantes / totalSegundos.toFloat() },
                 modifier = Modifier.size(220.dp),
                 strokeWidth = 8.dp
             )
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "50:00",
+                    text = formatarTempo(segundosRestantes),
                     style = MaterialTheme.typography.displayMedium
                 )
                 Text(text = "FOCO ATIVO")
             }
         }
-
         Spacer(modifier = Modifier.height(32.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -81,7 +94,6 @@ fun FocoAtivoScreen(
                 Text(text = "$duracaoMin min", style = MaterialTheme.typography.titleMedium)
             }
         }
-
         Spacer(modifier = Modifier.height(32.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -101,6 +113,12 @@ fun FocoAtivoScreen(
             }
         }
     }
+}
+
+private fun formatarTempo(segundos: Int): String {
+    val minutos = segundos / 60
+    val resto = segundos % 60
+    return minutos.toString().padStart(2, '0') + ":" + resto.toString().padStart(2, '0')
 }
 
 @Preview(showBackground = true)
