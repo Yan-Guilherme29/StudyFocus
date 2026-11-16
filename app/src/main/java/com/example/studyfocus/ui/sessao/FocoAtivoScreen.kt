@@ -39,11 +39,14 @@ fun FocoAtivoScreen(
 ) {
     val totalSegundos = duracaoMin * 60
     var segundosRestantes by remember { mutableStateOf(totalSegundos) }
+    var pausado by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        while (segundosRestantes > 0) {
-            delay(1000)
-            segundosRestantes--
+    LaunchedEffect(pausado) {
+        if (!pausado) {
+            while (segundosRestantes > 0) {
+                delay(1000)
+                segundosRestantes--
+            }
         }
     }
 
@@ -100,10 +103,14 @@ fun FocoAtivoScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedButton(
-                onClick = onPausarClick,
+                onClick = { pausado = !pausado },
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Pausar")
+                if (pausado) {
+                    Text(text = "Retomar")
+                } else {
+                    Text(text = "Pausar")
+                }
             }
             Button(
                 onClick = onConcluirClick,
