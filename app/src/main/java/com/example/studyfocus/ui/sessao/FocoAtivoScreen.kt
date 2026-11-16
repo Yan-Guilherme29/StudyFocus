@@ -35,7 +35,7 @@ fun FocoAtivoScreen(
     tituloTarefa: String? = "Normalização até 3NF",
     duracaoMin: Int = 50,
     onPausarClick: () -> Unit = {},
-    onConcluirClick: () -> Unit = {}
+    onConcluirClick: (segundosEstudados: Int) -> Unit = {}
 ) {
     val totalSegundos = duracaoMin * 60
     var segundosRestantes by remember { mutableStateOf(totalSegundos) }
@@ -113,7 +113,7 @@ fun FocoAtivoScreen(
                 }
             }
             Button(
-                onClick = onConcluirClick,
+                onClick = { onConcluirClick(totalSegundos - segundosRestantes) },
                 modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Concluir")
