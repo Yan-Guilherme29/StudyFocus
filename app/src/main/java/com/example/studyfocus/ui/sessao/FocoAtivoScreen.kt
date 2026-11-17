@@ -28,6 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.studyfocus.ui.theme.StudyFocusTheme
 import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun FocoAtivoScreen(
@@ -40,6 +43,7 @@ fun FocoAtivoScreen(
     val totalSegundos = duracaoMin * 60
     var segundosRestantes by remember { mutableStateOf(totalSegundos) }
     var pausado by remember { mutableStateOf(false) }
+    val inicioMs = remember { System.currentTimeMillis() }
 
     LaunchedEffect(pausado) {
         if (!pausado) {
@@ -90,7 +94,7 @@ fun FocoAtivoScreen(
         ) {
             Column {
                 Text(text = "Início", style = MaterialTheme.typography.bodySmall)
-                Text(text = "09:41", style = MaterialTheme.typography.titleMedium)
+                Text(text = formatarHora(inicioMs), style = MaterialTheme.typography.titleMedium)
             }
             Column(horizontalAlignment = Alignment.End) {
                 Text(text = "Duração planejada", style = MaterialTheme.typography.bodySmall)
@@ -126,6 +130,11 @@ private fun formatarTempo(segundos: Int): String {
     val minutos = segundos / 60
     val resto = segundos % 60
     return minutos.toString().padStart(2, '0') + ":" + resto.toString().padStart(2, '0')
+}
+
+private fun formatarHora(milissegundos: Long): String {
+    val formato = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return formato.format(Date(milissegundos))
 }
 
 @Preview(showBackground = true)
