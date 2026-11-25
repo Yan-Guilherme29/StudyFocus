@@ -11,7 +11,12 @@ object Rotas {
     const val NOVA_SESSAO = "nova_sessao"
     const val FOCO_ATIVO = "foco_ativo"
     const val REVISAO_DIARIA = "revisao_diaria"
-
     const val ESTATISTICAS = "estatisticas"
+
+    const val CADASTRO = "cadastro"
+
+    const val EDITAR_DISCIPLINA = "editar_disciplina"
+
+    const val EDITAR_TAREFA = "editar_tarefa"
 
 }
