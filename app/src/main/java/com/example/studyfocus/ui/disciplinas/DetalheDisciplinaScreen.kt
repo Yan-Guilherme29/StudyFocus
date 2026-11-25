@@ -86,7 +86,8 @@ private fun formatarData(millis: Long): String {
 fun DetalheDisciplinaScreen(
     onVoltarClick: () -> Unit = {},
     onVerTodasTarefasClick: () -> Unit = {},
-    onRevisarClick: () -> Unit = {}
+    onRevisarClick: () -> Unit = {},
+    onEditarClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -111,6 +112,10 @@ fun DetalheDisciplinaScreen(
                 fontWeight = FontWeight.Bold,
                 color = Texto
             )
+
+            Spacer(Modifier.weight(1f))
+
+            TextButton(onClick = onEditarClick) {Text(text = "Editar") }
         }
 
         Spacer(Modifier.height(12.dp))
