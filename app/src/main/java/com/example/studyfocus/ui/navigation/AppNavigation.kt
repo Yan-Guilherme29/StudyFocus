@@ -15,11 +15,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.studyfocus.ui.disciplinas.DetalheDisciplinaScreen
 import com.example.studyfocus.ui.disciplinas.DisciplinasScreen
+import com.example.studyfocus.ui.disciplinas.EditarDisciplinaScreen
 import com.example.studyfocus.ui.home.HomeScreen
+import com.example.studyfocus.ui.login.CadastroScreen
 import com.example.studyfocus.ui.login.LoginScreen
 import com.example.studyfocus.ui.revisao.RevisaoDiariaScreen
 import com.example.studyfocus.ui.sessao.FocoAtivoScreen
 import com.example.studyfocus.ui.sessao.NovaSessaoScreen
+import com.example.studyfocus.ui.tarefas.EditarTarefaScreen
 import com.example.studyfocus.ui.tarefas.NovaTarefaScreen
 import com.example.studyfocus.ui.tarefas.TarefasScreen
 
@@ -32,7 +35,7 @@ fun AppNavigation() {
 
     Scaffold(
         bottomBar = {
-            if (rotaAtual != Rotas.LOGIN) {
+            if (rotaAtual != Rotas.LOGIN && rotaAtual != Rotas.CADASTRO) {
                 BarraInferior(
                     rotaSelecionada = abaDaRota(rotaAtual),
                     onItemClick = { rota ->
@@ -57,9 +60,22 @@ fun AppNavigation() {
                         navController.navigate(Rotas.HOME) {
                             popUpTo(Rotas.LOGIN) { inclusive = true }
                         }
+                    },
+                    onCriarContaClick = { navController.navigate(Rotas.CADASTRO) }
+                )
+            }
+
+            composable(Rotas.CADASTRO) {
+                CadastroScreen(
+                    onJaTenhoContaClick = { navController.popBackStack() },
+                    onCriarContaClick = { _, _, _ ->
+                        navController.navigate(Rotas.HOME) {
+                            popUpTo(Rotas.LOGIN) { inclusive = true }
+                        }
                     }
                 )
             }
+
             composable(Rotas.HOME) {
                 HomeScreen(
                     onTarefasClick = { navController.navigate(Rotas.TAREFAS) },
@@ -81,13 +97,31 @@ fun AppNavigation() {
                 DetalheDisciplinaScreen(
                     onVoltarClick = { navController.popBackStack() },
                     onVerTodasTarefasClick = { navController.navigate(Rotas.TAREFAS) },
-                    onRevisarClick = { navController.navigate(Rotas.REVISAO_DIARIA) }
+                    onRevisarClick = { navController.navigate(Rotas.REVISAO_DIARIA) },
+                    onEditarClick = { navController.navigate(Rotas.EDITAR_DISCIPLINA) }
+                )
+            }
+
+            composable(Rotas.EDITAR_DISCIPLINA) {
+                EditarDisciplinaScreen(
+                    onVoltarClick = { navController.popBackStack() },
+                    onSalvarClick = { navController.popBackStack() },
+                    onExcluirClick = { navController.popBackStack() }
                 )
             }
 
             composable(Rotas.TAREFAS) {
                 TarefasScreen(
-                    onNovaTarefaClick = { navController.navigate(Rotas.NOVA_TAREFA) }
+                    onNovaTarefaClick = { navController.navigate(Rotas.NOVA_TAREFA) },
+                    onTarefaClick = { navController.navigate(Rotas.EDITAR_TAREFA) }
+                )
+            }
+
+            composable(Rotas.EDITAR_TAREFA) {
+                EditarTarefaScreen(
+                    onVoltarClick = { navController.popBackStack() },
+                    onSalvarClick = { navController.popBackStack() },
+                    onExcluirClick = { navController.popBackStack() }
                 )
             }
 
@@ -129,8 +163,9 @@ fun AppNavigation() {
 }
 
 private fun abaDaRota(rota: String?): String? = when (rota) {
-    Rotas.DETALHE_DISCIPLINA, Rotas.REVISAO_DIARIA -> Rotas.DISCIPLINAS
+    Rotas.DETALHE_DISCIPLINA, Rotas.EDITAR_DISCIPLINA, Rotas.REVISAO_DIARIA -> Rotas.DISCIPLINAS
     Rotas.NOVA_TAREFA -> Rotas.TAREFAS
+    Rotas.EDITAR_TAREFA -> Rotas.TAREFAS
     Rotas.FOCO_ATIVO -> Rotas.NOVA_SESSAO
     else -> rota
 }
