@@ -88,22 +88,25 @@ private val IconeOlhoRiscado = icone(
 
 @Composable
 fun LoginScreen(
-    onEntrarClick: () -> Unit = {},
+    carregando: Boolean = false,
+    erro: String? = null,
+    onEntrarClick: (email: String, senha: String) -> Unit = { _, _ -> },
     onCriarContaClick: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
     var senhaVisivel by remember { mutableStateOf(false) }
-    var erro by remember { mutableStateOf<String?>(null) }
+    var erroLocal by remember { mutableStateOf<String?>(null) }
 
     // P1: só confere se os campos foram preenchidos (o login de verdade entra depois)
     fun entrar() {
-        erro = when {
+        if (carregando) return
+        erroLocal = when {
             email.isBlank() || senha.isBlank() -> "Preencha o email e a senha."
             !email.contains("@") -> "Digite um email válido."
             else -> null
         }
-        if (erro == null) onEntrarClick()
+        if (erroLocal == null) onEntrarClick(email.trim(), senha)
     }
 
     Column(
@@ -157,11 +160,11 @@ fun LoginScreen(
             value = email,
             onValueChange = {
                 email = it
-                erro = null
+                erroLocal = null
             },
             placeholder = { Text("Digite seu email", color = TextoSuave) },
             singleLine = true,
-            isError = erro != null,
+            isError = (erro ?: erroLocal) != null,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -178,11 +181,11 @@ fun LoginScreen(
             value = senha,
             onValueChange = {
                 senha = it
-                erro = null
+                erroLocal = null
             },
             placeholder = { Text("Digite sua senha", color = TextoSuave) },
             singleLine = true,
-            isError = erro != null,
+            isError = (erro ?: erroLocal) != null,
             visualTransformation = if (senhaVisivel) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = { senhaVisivel = !senhaVisivel }) {
@@ -205,7 +208,7 @@ fun LoginScreen(
         )
 
         // Mensagem de erro (só aparece se faltar algo)
-        erro?.let {
+        (erroLocal ?: erro)?.let {
             Spacer(Modifier.height(8.dp))
             Text(
                 text = it,
@@ -219,13 +222,18 @@ fun LoginScreen(
 
         Button(
             onClick = { entrar() },
+            enabled = !carregando,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Indigo)
         ) {
-            Text(text = "Entrar", fontWeight = FontWeight.Bold, color = Color.White)
+            if (carregando) {
+                Text(text = "Carregando", fontWeight = FontWeight.Bold, color = Color.White)
+            } else {
+                Text(text = "Entrar", fontWeight = FontWeight.Bold, color = Color.White)
+            }
         }
 
         Spacer(Modifier.height(12.dp))

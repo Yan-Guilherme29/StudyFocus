@@ -25,6 +25,10 @@ import com.example.studyfocus.ui.sessao.NovaSessaoScreen
 import com.example.studyfocus.ui.tarefas.EditarTarefaScreen
 import com.example.studyfocus.ui.tarefas.NovaTarefaScreen
 import com.example.studyfocus.ui.tarefas.TarefasScreen
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.studyfocus.ui.login.AuthViewModel
 
 @Composable
 fun AppNavigation() {
@@ -55,24 +59,44 @@ fun AppNavigation() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Rotas.LOGIN) {
-                LoginScreen(
-                    onEntrarClick = {
+                val authViewModel: AuthViewModel = viewModel()
+
+                val estado by authViewModel.estado.collectAsState()
+
+                LaunchedEffect(estado.autenticado) {
+                    if (estado.autenticado) {
                         navController.navigate(Rotas.HOME) {
                             popUpTo(Rotas.LOGIN) { inclusive = true }
                         }
-                    },
+                    }
+                }
+
+                LoginScreen(
+                    carregando = estado.carregando,
+                    erro = estado.erro,
+                    onEntrarClick = { email, senha -> authViewModel.entrar(email, senha) },
                     onCriarContaClick = { navController.navigate(Rotas.CADASTRO) }
                 )
             }
 
             composable(Rotas.CADASTRO) {
-                CadastroScreen(
-                    onJaTenhoContaClick = { navController.popBackStack() },
-                    onCriarContaClick = { _, _, _ ->
+                val authViewModel: AuthViewModel = viewModel()
+                val estado by authViewModel.estado.collectAsState()
+
+                LaunchedEffect(estado.autenticado) {
+                    if (estado.autenticado) {
                         navController.navigate(Rotas.HOME) {
                             popUpTo(Rotas.LOGIN) { inclusive = true }
                         }
                     }
+                }
+
+                CadastroScreen(
+                    carregando = estado.carregando,
+                    erro = estado.erro,
+                    // O Cadastro entrega 3 valores: nome, e-mail e senha.
+                    onCriarContaClick = { nome, email, senha -> authViewModel.cadastrar(nome, email, senha) },
+                    onJaTenhoContaClick = { navController.popBackStack() }
                 )
             }
 
